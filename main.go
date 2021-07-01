@@ -1,14 +1,19 @@
 package main
 
 import (
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/mandrigin/gin-spa/spa"
 )
 
 func main() {
 	r := gin.Default()
 
-	r.Use(spa.Middleware("/", "static"))
+	r.Use(CORS())
+
+	r.Use(static.Serve("/", static.LocalFile("./static", true)))
+	r.NoRoute(func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
 
 	r.Run(":3030")
 }
